@@ -1,0 +1,56 @@
+.wrapper {
+  position: relative;
+  //scrollbar
+  /* width */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #c4c4c4;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #727272;
+  }
+
+  ::-webkit-scrollbar-corner {
+
+  }
+}
+
+.searchInput {
+  font-size: calc(10px + 2vmin);
+  padding: .25em .5em;
+  border: none;
+  border-radius: 5px;
+  position: relative;
+  z-index: 2;
+}
+
+.suggestions_box {
+  font-size: calc(8px + 2vmin);
+  position: absolute;
+  text-align: left;
+  background-color: #eee;
+  width: 100%;
+  padding-top: 5px;
+  margin-top: -5px;
+  max-height: 25vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+
+  .suggestion_item {
+    color: #444;
+    padding: 0 .5em;
+    margin: 0;
+    cursor: pointer;
+
+    &:hover, &:focus {
+      background-color: rgb(52, 52, 255);
+      color: #fff;
+    }
+  }  
+}
