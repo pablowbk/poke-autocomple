@@ -1,0 +1,28 @@
+.PokeBall {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // width: calc(30px + 2vmin);
+  width: calc(10px + 5vmin);
+  max-width: 50px;
+  top: 50%;
+  left: calc(100% + .5em);
+  transform: translateY(-50%);
+  z-index: 1;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to right, rgba(0,0,0,.8) 5%, rgba(0,0,0,0) 50%);
+    // border-bottom: 2px solid rgb(255, 255, 255);
+    border-radius: 50%;
+    transform: rotateZ(-80deg);
+  }
+
+  img {
+    max-width: 100%;
+  }
+}

@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useReducer, useState } from "react";
 import SuggestionItem from "./SuggetionItem";
 
 import classes from './Autocomplete.module.scss';
+import PokeLoader from "../loader/PokeLoader";
 
 type PokeItem = {
   name: string,
@@ -13,7 +14,8 @@ type AutocompleteSate = {
   results?: PokeItem[],
   filtered?: PokeItem[],
   loading?: boolean,
-  pokeUrl?: string
+  pokeUrl?: string,
+  pokeData?: any
 }
 
 const Autocomplete: React.FC = (): JSX.Element => {
@@ -27,15 +29,16 @@ const Autocomplete: React.FC = (): JSX.Element => {
       value: '', 
       results: [],
       filtered: [],
-      loading: false,
-      pokeUrl: '' 
+      loading: true,
+      pokeUrl: '',
+      pokeData: null
     }
   );
 
   useEffect(() => {
     fetch('https://pokeapi.co/api/v2/pokemon?limit=1126')
       .then(res => res.json())
-      .then(json => setState({results: json.results}))
+      .then(json => setState({results: json.results, loading: false}))
     
     return () => setState({results: []});
   }, []);
@@ -55,8 +58,8 @@ const Autocomplete: React.FC = (): JSX.Element => {
     ev.preventDefault();
 
     state.filtered?.find((item: PokeItem) => {
-      console.log(item)
       if (item.name === state.value?.toLowerCase()) {
+        console.log(item)
         setState({pokeUrl: item.url})
       } else {
         setState({pokeUrl:''})
@@ -82,33 +85,39 @@ const Autocomplete: React.FC = (): JSX.Element => {
   }, [state.pokeUrl])
 
   return (
-    <form 
-      className={classes.wrapper}
-      onSubmit={handleSubmit}
-    >
-      <input 
-        type="text"
-        placeholder="start typing..."
-        value={state.value}
-        onChange={handleChange}
-        className={classes.searchInput}
-      />
+    <div className={classes.Autocomplete}>
+      {!state.loading && (
 
-      { state.filtered && state.filtered.length > 0 && (
-        <div className={classes.suggestions_box}>
-          {state.filtered.map(
-            (item: PokeItem) => (
-              <SuggestionItem 
-                key={item.url} 
-                name={item.name}
-                link={item.url}
-                setState={setState}
-              />
-            )
+        <form 
+          className={classes.wrapper}
+          onSubmit={handleSubmit}
+        >
+          <input 
+            type="text"
+            placeholder="start typing..."
+            value={state.value}
+            onChange={handleChange}
+            className={classes.searchInput}
+          />
+
+          { state.filtered && state.filtered.length > 0 && (
+            <div className={classes.suggestions_box}>
+              {state.filtered.map(
+                (item: PokeItem) => (
+                  <SuggestionItem 
+                    key={item.url} 
+                    name={item.name}
+                    link={item.url}
+                    setState={setState}
+                  />
+                )
+              )}
+            </div>
           )}
-        </div>
+        </form>
       )}
-    </form>
+      <PokeLoader loading={state.loading}/>
+    </div>
   )
 };
 
